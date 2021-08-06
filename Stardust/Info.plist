@@ -46,5 +46,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Access to current location is needed for sunrise and sunset calculations</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Access to current location is needed for sunrise and sunset calculations</string>
 </dict>
 </plist>

@@ -11,7 +11,8 @@ import SwiftUI
 struct StardustApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let globalVars = GlobalVars()
+            MainView(globalVars: globalVars)
         }
     }
 }
