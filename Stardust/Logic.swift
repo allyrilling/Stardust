@@ -70,6 +70,27 @@ class Logic {
 
         }.resume()
         
+        // MARK: - MoM
+        guard let url = URL(string: "https://api.sunrise-sunset.org/json?lat=\(locationViewModel.lastSeenLocation?.coordinate.latitude ?? 0)&lng=\(locationViewModel.lastSeenLocation?.coordinate.longitude ?? 0)&date=-1month&formatted=0") else { return }
+        URLSession.shared.dataTask(with: url) { (data, _, _) in
+            let decodedResponse = try! JSONDecoder().decode(APIResponse.self, from: data!)
+            
+            DispatchQueue.main.async {
+                globalVars.sunriseLastMonthRaw = decodedResponse.results.sunrise
+                globalVars.sunsetLastMonthRaw = decodedResponse.results.sunset
+                globalVars.daylightLastMonthRaw = decodedResponse.results.dayLength
+                
+                globalVars.sunriseLastMonth = convertUtcToLocalTime(dateStr: decodedResponse.results.sunrise) ?? "N/A"
+                globalVars.sunsetLastMonth = convertUtcToLocalTime(dateStr: decodedResponse.results.sunset) ?? "N/A"
+                globalVars.daylightLastMonth = convertDaylight(daylight: decodedResponse.results.dayLength)
+                
+                globalVars.sunriseChangeMoM = calcDifInTime(today: globalVars.sunrise, yesterday: globalVars.sunriseLastMonth)
+                globalVars.sunsetChangeMoM = calcDifInTime(today: globalVars.sunset, yesterday: globalVars.sunsetLastMonth)
+                globalVars.daylightChangeMoM = calcDifInDaylight(todayRaw: globalVars.daylightRaw, yesterdayRaw: globalVars.daylightLastMonthRaw)
+            }
+
+        }.resume()
+        
     }
     
     static func convertUtcToLocalTime(dateStr: String) -> String? {

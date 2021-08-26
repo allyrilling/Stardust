@@ -183,6 +183,52 @@ struct TrackingView: View {
                                     .opacity(0.3))
                     .padding()
                 
+                // MARK: - Month Over Month
+                VStack {
+                    Text("Month Over Month")
+                        .font(.system(size: sectionTitleSize, weight: .bold))
+                        .padding(.bottom)
+                    HStack {
+                        VStack { // Sunrise
+                            Image(systemName: "sunrise.fill")
+                                .renderingMode(.original)
+                                .font(.system(.title))
+                            Text("Sunrise")
+                            Text("\(abs(Int(globalVars.sunriseChangeMoM)!)) min")
+                                .font(.system(size: timeFont, weight: .bold))
+                            Text("\(Int(globalVars.sunriseChangeMoM)! > 0 ? "Later" : "Earlier" )")
+                        }
+                        
+                        Spacer()
+                        
+                        VStack { // Daylight
+                            Image(systemName: "sun.max.fill")
+                                .renderingMode(.original)
+                                .font(.system(.title))
+                            Text("Daylight")
+                            Text("\(abs(Int(globalVars.daylightChangeMoM)!)) min")
+                                .font(.system(size: timeFont, weight: .bold))
+                            Text("\(Int(globalVars.daylightChangeMoM)! > 0 ? "More" : "Less" )")
+                        }
+                        
+                        Spacer()
+                        
+                        VStack { // Sunset
+                            Image(systemName: "sunset.fill")
+                                .renderingMode(.original)
+                                .font(.system(.title))
+                            Text("Sunset")
+                            Text("\(abs(Int(globalVars.sunsetChangeMoM)!)) min")
+                                .font(.system(size: timeFont, weight: .bold))
+                            Text("\(Int(globalVars.sunsetChangeMoM)! > 0 ? "Later" : "Earlier" )")
+                        }
+                    }
+                }.padding()
+                    .background(RoundedRectangle(cornerRadius: 20)
+                                    .foregroundColor(.white)
+                                    .opacity(0.3))
+                    .padding()
+                
                 
                 Spacer()
             }

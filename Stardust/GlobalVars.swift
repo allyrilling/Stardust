@@ -48,6 +48,20 @@ class GlobalVars: ObservableObject {
     @Published var sunsetChangeWoW = "0"
     @Published var daylightChangeWoW = "0"
     
+    // MARK: - Month Over Month
+    
+    @Published var sunriseLastMonth: String = "0"
+    @Published var sunsetLastMonth: String = "0"
+    @Published var daylightLastMonth: String =  "0"
+    
+    @Published var sunriseLastMonthRaw: String = "0"
+    @Published var sunsetLastMonthRaw: String = "0"
+    @Published var daylightLastMonthRaw: Int =  0
+    
+    @Published var sunriseChangeMoM = "0"
+    @Published var sunsetChangeMoM = "0"
+    @Published var daylightChangeMoM = "0"
+    
     // MARK: - Gradient
     var sunriseGrad = LinearGradient(gradient: Gradient(colors: [.blue, .orange]), startPoint: .topTrailing, endPoint: .bottomLeading)
     var middayGrad = LinearGradient(gradient: Gradient(colors: [.blue, .orange]), startPoint: .topTrailing, endPoint: .bottomLeading)
