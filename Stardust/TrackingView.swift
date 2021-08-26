@@ -24,6 +24,7 @@ struct TrackingView: View {
         VStack {
             
             ScrollView {
+                // MARK: - Coordinates
                 VStack {
                     HStack {
                         Image(systemName: "globe")
@@ -44,12 +45,13 @@ struct TrackingView: View {
                 Spacer()
                     .frame(height: spacerHeight)
                 
+                // MARK: - Today
                 VStack {
                     Text("Today")
                         .font(.system(size: sectionTitleSize, weight: .bold))
                         .padding(.bottom)
                     HStack {
-                        VStack {
+                        VStack { // Sunrise
                             Image(systemName: "sunrise.fill")
                                 .renderingMode(.original)
                                 .font(.system(.title))
@@ -60,7 +62,7 @@ struct TrackingView: View {
                         
                         Spacer()
                         
-                        VStack {
+                        VStack { // Daylight
                             Image(systemName: "sun.max.fill")
                                 .renderingMode(.original)
                                 .font(.system(.title))
@@ -71,7 +73,7 @@ struct TrackingView: View {
                         
                         Spacer()
                         
-                        VStack {
+                        VStack { // Sunset
                             Image(systemName: "sunset.fill")
                                 .renderingMode(.original)
                                 .font(.system(.title))
@@ -89,43 +91,90 @@ struct TrackingView: View {
                 Spacer()
                     .frame(height: spacerHeight)
                 
+                // MARK: - Day Over Day
                 VStack {
                     Text("Day Over Day")
                         .font(.system(size: sectionTitleSize, weight: .bold))
                         .padding(.bottom)
                     HStack {
-                        VStack {
+                        VStack { // Sunrise
                             Image(systemName: "sunrise.fill")
                                 .renderingMode(.original)
                                 .font(.system(.title))
                             Text("Sunrise")
-                            Text("\(abs(Int(globalVars.sunriseChange)!)) min")
+                            Text("\(abs(Int(globalVars.sunriseChangeDoD)!)) min")
                                 .font(.system(size: timeFont, weight: .bold))
-                            Text("\(Int(globalVars.sunriseChange)! > 0 ? "Later" : "Earlier" )")
+                            Text("\(Int(globalVars.sunriseChangeDoD)! > 0 ? "Later" : "Earlier" )")
                         }
                         
                         Spacer()
                         
-                        VStack {
+                        VStack { // Daylight
                             Image(systemName: "sun.max.fill")
                                 .renderingMode(.original)
                                 .font(.system(.title))
                             Text("Daylight")
-                            Text("\(abs(Int(globalVars.daylightChange)!)) min")
+                            Text("\(abs(Int(globalVars.daylightChangeDoD)!)) min")
                                 .font(.system(size: timeFont, weight: .bold))
-                            Text("\(Int(globalVars.daylightChange)! > 0 ? "More" : "Less" )")
+                            Text("\(Int(globalVars.daylightChangeDoD)! > 0 ? "More" : "Less" )")
                         }
                         
                         Spacer()
                         
-                        VStack {
+                        VStack { // Sunset
                             Image(systemName: "sunset.fill")
                                 .renderingMode(.original)
                                 .font(.system(.title))
                             Text("Sunset")
-                            Text("\(abs(Int(globalVars.sunsetChange)!)) min")
+                            Text("\(abs(Int(globalVars.sunsetChangeDoD)!)) min")
                                 .font(.system(size: timeFont, weight: .bold))
-                            Text("\(Int(globalVars.sunsetChange)! > 0 ? "Later" : "Earlier" )")
+                            Text("\(Int(globalVars.sunsetChangeDoD)! > 0 ? "Later" : "Earlier" )")
+                        }
+                    }
+                }.padding()
+                    .background(RoundedRectangle(cornerRadius: 20)
+                                    .foregroundColor(.white)
+                                    .opacity(0.3))
+                    .padding()
+                
+                // MARK: - Week Over Week
+                VStack {
+                    Text("Week Over Week")
+                        .font(.system(size: sectionTitleSize, weight: .bold))
+                        .padding(.bottom)
+                    HStack {
+                        VStack { // Sunrise
+                            Image(systemName: "sunrise.fill")
+                                .renderingMode(.original)
+                                .font(.system(.title))
+                            Text("Sunrise")
+                            Text("\(abs(Int(globalVars.sunriseChangeWoW)!)) min")
+                                .font(.system(size: timeFont, weight: .bold))
+                            Text("\(Int(globalVars.sunriseChangeWoW)! > 0 ? "Later" : "Earlier" )")
+                        }
+                        
+                        Spacer()
+                        
+                        VStack { // Daylight
+                            Image(systemName: "sun.max.fill")
+                                .renderingMode(.original)
+                                .font(.system(.title))
+                            Text("Daylight")
+                            Text("\(abs(Int(globalVars.daylightChangeWoW)!)) min")
+                                .font(.system(size: timeFont, weight: .bold))
+                            Text("\(Int(globalVars.daylightChangeWoW)! > 0 ? "More" : "Less" )")
+                        }
+                        
+                        Spacer()
+                        
+                        VStack { // Sunset
+                            Image(systemName: "sunset.fill")
+                                .renderingMode(.original)
+                                .font(.system(.title))
+                            Text("Sunset")
+                            Text("\(abs(Int(globalVars.sunsetChangeWoW)!)) min")
+                                .font(.system(size: timeFont, weight: .bold))
+                            Text("\(Int(globalVars.sunsetChangeWoW)! > 0 ? "Later" : "Earlier" )")
                         }
                     }
                 }.padding()

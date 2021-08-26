@@ -11,6 +11,7 @@ class Logic {
     
     static func queryAPI(globalVars: GlobalVars, locationViewModel: LocationViewModel) {
         
+        // MARK: - Today
         guard let url = URL(string: "https://api.sunrise-sunset.org/json?lat=\(locationViewModel.lastSeenLocation?.coordinate.latitude ?? 0)&lng=\(locationViewModel.lastSeenLocation?.coordinate.longitude ?? 0)&date=today&formatted=0") else { return }
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             let decodedResponse = try! JSONDecoder().decode(APIResponse.self, from: data!)
@@ -25,9 +26,9 @@ class Logic {
                 globalVars.daylight = "\(convertDaylight(daylight: decodedResponse.results.dayLength))"
             }
 
-        }
-        .resume()
+        }.resume()
         
+        // MARK: - DoD
         guard let url = URL(string: "https://api.sunrise-sunset.org/json?lat=\(locationViewModel.lastSeenLocation?.coordinate.latitude ?? 0)&lng=\(locationViewModel.lastSeenLocation?.coordinate.longitude ?? 0)&date=yesterday&formatted=0") else { return }
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             let decodedResponse = try! JSONDecoder().decode(APIResponse.self, from: data!)
@@ -41,13 +42,33 @@ class Logic {
                 globalVars.sunsetYesterday = convertUtcToLocalTime(dateStr: decodedResponse.results.sunset) ?? "N/A"
                 globalVars.daylightYesterday = convertDaylight(daylight: decodedResponse.results.dayLength)
                 
-                globalVars.sunriseChange = calcDifInTime(today: globalVars.sunrise, yesterday: globalVars.sunriseYesterday)
-                globalVars.sunsetChange = calcDifInTime(today: globalVars.sunset, yesterday: globalVars.sunsetYesterday)
-                globalVars.daylightChange = calcDifInDaylight(todayRaw: globalVars.daylightRaw, yesterdayRaw: globalVars.daylightYesterdayRaw)
+                globalVars.sunriseChangeDoD = calcDifInTime(today: globalVars.sunrise, yesterday: globalVars.sunriseYesterday)
+                globalVars.sunsetChangeDoD = calcDifInTime(today: globalVars.sunset, yesterday: globalVars.sunsetYesterday)
+                globalVars.daylightChangeDoD = calcDifInDaylight(todayRaw: globalVars.daylightRaw, yesterdayRaw: globalVars.daylightYesterdayRaw)
             }
 
-        }
-        .resume()
+        }.resume()
+        
+        // MARK: - WoW
+        guard let url = URL(string: "https://api.sunrise-sunset.org/json?lat=\(locationViewModel.lastSeenLocation?.coordinate.latitude ?? 0)&lng=\(locationViewModel.lastSeenLocation?.coordinate.longitude ?? 0)&date=-7weekdays&formatted=0") else { return }
+        URLSession.shared.dataTask(with: url) { (data, _, _) in
+            let decodedResponse = try! JSONDecoder().decode(APIResponse.self, from: data!)
+            
+            DispatchQueue.main.async {
+                globalVars.sunriseLastWeekRaw = decodedResponse.results.sunrise
+                globalVars.sunsetLastWeekRaw = decodedResponse.results.sunset
+                globalVars.daylightLastWeekRaw = decodedResponse.results.dayLength
+                
+                globalVars.sunriseLastWeek = convertUtcToLocalTime(dateStr: decodedResponse.results.sunrise) ?? "N/A"
+                globalVars.sunsetLastWeek = convertUtcToLocalTime(dateStr: decodedResponse.results.sunset) ?? "N/A"
+                globalVars.daylightLastWeek = convertDaylight(daylight: decodedResponse.results.dayLength)
+                
+                globalVars.sunriseChangeWoW = calcDifInTime(today: globalVars.sunrise, yesterday: globalVars.sunriseLastWeek)
+                globalVars.sunsetChangeWoW = calcDifInTime(today: globalVars.sunset, yesterday: globalVars.sunsetLastWeek)
+                globalVars.daylightChangeWoW = calcDifInDaylight(todayRaw: globalVars.daylightRaw, yesterdayRaw: globalVars.daylightLastWeekRaw)
+            }
+
+        }.resume()
         
     }
     
